@@ -1,5 +1,5 @@
-# [TabChi](http://yon.ir/4cR3)
+# [TabChi]
 * **Install Bot**
 `````sh
-yon.ir/4cR3
+TELEGRAM : @ARTIMSAN
 `````
