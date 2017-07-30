@@ -17,17 +17,17 @@ function get_admin ()
     	return print("\n\27[36m     ADMIN ID |\27[32m ".. admin .." \27[36m| شناسه ادمین")
 	end
 end
-function get_bot (i, naji)
-	function bot_info (i, naji)
-		redis:set("botBOT-IDid",naji.id_)
-		if naji.first_name_ then
-			redis:set("botBOT-IDfname",naji.first_name_)
+function get_bot (i, ABIZ)
+	function bot_info (i, ABIZ)
+		redis:set("botBOT-IDid",ABIZ.id_)
+		if ABIZ.first_name_ then
+			redis:set("botBOT-IDfname",ABIZ.first_name_)
 		end
-		if naji.last_name_ then
-			redis:set("botBOT-IDlanme",naji.last_name_)
+		if ABIZ.last_name_ then
+			redis:set("botBOT-IDlanme",ABIZ.last_name_)
 		end
-		redis:set("botBOT-IDnum",naji.phone_number_)
-		return naji.id_
+		redis:set("botBOT-IDnum",ABIZ.phone_number_)
+		return ABIZ.id_
 	end
 	tdcli_function ({ID = "GetMe",}, bot_info, nil)
 end
@@ -35,7 +35,7 @@ function reload(chat_id,msg_id)
 	loadfile("./bot-BOT-ID.lua")()
 	send(chat_id, msg_id, "<i>با موفقیت انجام شد.</i>")
 end
-function is_naji(msg)
+function is_ABIZ(msg)
     local var = false
 	local hash = 'botBOT-IDadmin'
 	local user = msg.sender_user_id_
@@ -311,9 +311,9 @@ function tdcli_update_callback(data)
 				elseif text:match("^(افزودن مدیر) (%d+)$") then
 					local matches = text:match("%d+")
 					if redis:sismember('botBOT-IDadmin', matches) then
-						return send(msg.chat_id_, msg.id_, "<i>کاربر مورد نظر در حال حاضر مدیر است.</i>")
+						return send(msg.chat_id_, msg.id_, "<i>کاربر مورد نظر در حال حاضر مدیره.</i>")
 					elseif redis:sismember('botBOT-IDmod', msg.sender_user_id_) then
-						return send(msg.chat_id_, msg.id_, "شما دسترسی ندارید.")
+						return send(msg.chat_id_, msg.id_, "تو دسترسی نداری.")
 					else
 						redis:sadd('botBOT-IDadmin', matches)
 						redis:sadd('botBOT-IDmod', matches)
@@ -368,14 +368,14 @@ function tdcli_update_callback(data)
 					return reload(msg.chat_id_,msg.id_)
 				elseif text:match("^(لیست) (.*)$") then
 					local matches = text:match("^لیست (.*)$")
-					local naji
+					local ABIZ
 					if matches == "مخاطبین" then
 						return tdcli_function({
 							ID = "SearchContacts",
 							query_ = nil,
 							limit_ = 999999999
 						},
-						function (I, Naji)
+						function (I, ABIZ)
 							local count = Naji.total_count_
 							local text = "مخاطبین : \n"
 							for i =0 , tonumber(count) - 1 do
@@ -423,7 +423,7 @@ function tdcli_update_callback(data)
 					else
 						return true
 					end
-					local list =  redis:smembers(naji)
+					local list =  redis:smembers(ABIZ)
 					local text = tostring(matches).." : \n"
 					for i, v in pairs(list) do
 						text = tostring(text) .. tostring(i) .. "-  " .. tostring(v).."\n"
